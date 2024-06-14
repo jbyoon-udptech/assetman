@@ -6,14 +6,13 @@ void main() async {
   print('db test assetDB start');
   AssetDB dh = AssetDB();
   await dh.initDatabase();
+  const testKey = 'TESTUSD';
 
-  var d1 = Asset('KWRUSD', '2024-06-01', 1347);
-  var d2 = Asset('KWRUSD', '2024-06-03', 1447);
+  var d1 = Asset(testKey, '2024-06-01', 1347);
+  var d2 = Asset(testKey, '2024-06-03', 1447);
   await dh.delete(d1.name, d1.at);
   await dh.delete(d2.name, d2.at);
 
-  // await dh.add(d1);
-  // await dh.add(d2);
   var d = await dh.getAll();
   print('show all $d');
 
@@ -21,7 +20,7 @@ void main() async {
   await dh.update(Asset(d1.name, d1.at, 1200));
 
   print('show all ${await dh.getAll()}');
-  print('get lastofAt ${await dh.getLastofAt('KWRUSD', '2024-06-02')}');
+  print('get lastofAt ${await dh.getLastofAt(testKey, '2024-06-02')}');
 
   print('delete all');
   await dh.delete(d1.name, d1.at);

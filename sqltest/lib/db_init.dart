@@ -1,37 +1,34 @@
+import 'package:intl/intl.dart';
 import 'package:sqltest/db_helper.dart';
 import 'package:sqltest/asset_model.dart';
-import 'package:intl/intl.dart';
+import 'package:sqltest/items.dart';
+import 'package:sqltest/item_currency.dart';
+
+var krwusd = ItemCurrency('KRWUSD');
+var gItems = [krwusd];
 
 AssetDB gDB = AssetDB();
-var gItems = ['KWRUSD'];
 
-void updateItem(String name, String at) async {
-/*
-  double value = await loadItem(name, at);
-  var d = Asset(name, at, value)
-  try {
-    await gDB.add(d);
-  } catch (e) {
-    await dh.update(d);
-  }
-*/
-  await gDB.add(Asset(name, at, 0));
+Future<void> updateItem(ItemType item, String at) async {
+  var value = await item.load(at);
+  await gDB.upsert(Asset(item.name, at, value));
 }
 
-void updateAll(String at) async {
+Future<void> updateAllItems(String at) async {
   await gDB.initDatabase();
-  //print(await gDB.getAll());
   var now = DateTime.now();
   String date = DateFormat('yyy-MM-dd').format(now);
   if (at != "") {
     date = at;
   }
   for (int i = 0; i < gItems.length; i++) {
-    updateItem(gItems[i], date);
+    await updateItem(gItems[i], date);
   }
 }
 
-Future<List<Asset>> readAll(String at) async {
+Future<List<Asset>> readAllItems(String at) async {
+  await gDB.initDatabase();
+
   var now = DateTime.now();
   String date = DateFormat('yyy-MM-dd').format(now);
   if (at != "") {
@@ -39,7 +36,7 @@ Future<List<Asset>> readAll(String at) async {
   }
   List<Asset> items = [];
   for (int i = 0; i < gItems.length; i++) {
-    var d = await gDB.getLastofAt(gItems[i], date);
+    var d = await gDB.getLastofAt(gItems[i].name, date);
     if (d != null) {
       items.add(d);
     }

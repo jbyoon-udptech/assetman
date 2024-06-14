@@ -21,6 +21,6 @@ class Asset {
 
   @override
   String toString() {
-    return 'Asset{$name:$at=$value}';
+    return 'Asset{$name@$at = $value}';
   }
 }
