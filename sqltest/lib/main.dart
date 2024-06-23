@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:sqltest/db_init.dart';
 
-// void main() {
-//   runApp(const MyApp());
-// }
+void main() {
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -55,6 +56,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool isLoading = true;
   int _counter = 0;
 
   void _incrementCounter() {
@@ -121,5 +123,21 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  void waitForInitDB() async {
+    print('waitForInitDB');
+    await updateAllItems('');
+    print('waitForInitDB done');
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    print('initState');
+    waitForInitDB();
   }
 }
