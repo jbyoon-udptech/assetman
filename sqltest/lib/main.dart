@@ -1,8 +1,11 @@
+import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:sqltest/db_init.dart';
 
 import 'item_table.dart';
 import 'asset_model.dart';
+
+var log = Logger();
 
 void main() {
   runApp(const MyApp());
@@ -131,9 +134,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void waitForInitDB() async {
-    print('waitForInitDB');
+    log.d('waitForInitDB');
     await updateAllItems('');
-    print('waitForInitDB done');
+    log.d('waitForInitDB done');
     _items = await readAllItems('');
     setState(() {
       isLoading = false;
@@ -143,7 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    print('initState');
+    log.d('initState');
     waitForInitDB();
   }
 }

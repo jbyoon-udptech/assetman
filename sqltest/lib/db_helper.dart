@@ -5,8 +5,7 @@ import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'package:sqltest/asset_model.dart';
-//import 'dart:io' as io;
-//import 'package:path_provider/path_provider.dart';
+import 'my_logger.dart';
 
 class AssetDB {
   late Database _db;
@@ -78,7 +77,7 @@ class AssetDB {
     } catch (e) {
       await update(d);
     }
-    print('update $d.name $d.at $d.value');
+    log.d('update $d.name $d.at $d.value');
     return d;
   }
 

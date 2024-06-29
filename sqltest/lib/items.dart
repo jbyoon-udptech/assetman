@@ -5,7 +5,6 @@ class ItemType {
   ItemType(this.name, this.type);
 
   Future<double> load(String at) async {
-    print('call ItemType load');
-    return 1;
+    return 0;
   }
 }

@@ -1,9 +1,10 @@
 
+import 'package:sqltest/my_logger.dart';
 import 'package:sqltest/db_helper.dart';
 import 'package:sqltest/asset_model.dart';
 
 void main() async {
-  print('db test assetDB start');
+  log.d('db test assetDB start');
   AssetDB dh = AssetDB();
   await dh.initDatabase();
   const testKey = 'TESTUSD';
@@ -14,20 +15,20 @@ void main() async {
   await dh.delete(d2.name, d2.at);
 
   var d = await dh.getAll();
-  print('show all $d');
+  log.d('show all $d');
 
-  print('update d1 1200');
+  log.d('update d1 1200');
   await dh.update(Asset(d1.name, d1.at, 1200));
 
-  print('show all ${await dh.getAll()}');
-  print('get lastofAt ${await dh.getLastofAt(testKey, '2024-06-02')}');
+  log.d('show all ${await dh.getAll()}');
+  log.d('get lastofAt ${await dh.getLastofAt(testKey, '2024-06-02')}');
 
-  print('delete all');
+  log.d('delete all');
   await dh.delete(d1.name, d1.at);
   await dh.delete(d2.name, d2.at);
 
   d = await dh.getAll();
-  print('show all $d');
+  log.d('show all $d');
 
-  print('db test assetDB end');
+  log.d('db test assetDB end');
 }

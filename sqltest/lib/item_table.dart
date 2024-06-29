@@ -8,7 +8,7 @@ class ItemTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var tablerow = [
-      TableRow(
+      const TableRow(
         children: [
           TableCell(child: Text('Name')),
           TableCell(child: Text('At')),
