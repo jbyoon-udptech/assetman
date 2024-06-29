@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sqltest/db_init.dart';
 
+import 'item_table.dart';
+import 'asset_model.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -58,6 +61,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   bool isLoading = true;
   int _counter = 0;
+  List<Asset> _items = [];
 
   void _incrementCounter() {
     setState(() {
@@ -114,6 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            ItemTable(_items)
           ],
         ),
       ),
@@ -129,6 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
     print('waitForInitDB');
     await updateAllItems('');
     print('waitForInitDB done');
+    _items = await readAllItems('');
     setState(() {
       isLoading = false;
     });

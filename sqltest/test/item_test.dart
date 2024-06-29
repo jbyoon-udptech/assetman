@@ -1,6 +1,5 @@
 
 import 'package:sqltest/db_init.dart';
-import 'package:sqltest/asset_model.dart';
 
 void main() async {
   print('item test start');
