@@ -1,15 +1,8 @@
-import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
-import 'package:sqltest/db_init.dart';
 
-import 'item_table.dart';
-import 'asset_model.dart';
-
-var log = Logger();
-
-void main() {
-  runApp(const MyApp());
-}
+// void main() {
+//   runApp(const MyApp());
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -62,9 +55,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  bool isLoading = true;
   int _counter = 0;
-  List<Asset> _items = [];
 
   void _incrementCounter() {
     setState(() {
@@ -121,7 +112,6 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            ItemTable(_items)
           ],
         ),
       ),
@@ -131,22 +121,5 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
-  }
-
-  void waitForInitDB() async {
-    log.d('waitForInitDB');
-    await updateAllItems('');
-    log.d('waitForInitDB done');
-    _items = await readAllItems('');
-    setState(() {
-      isLoading = false;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    log.d('initState');
-    waitForInitDB();
   }
 }
