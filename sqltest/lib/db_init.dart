@@ -4,10 +4,10 @@ import 'package:sqltest/asset_model.dart';
 import 'package:sqltest/items.dart';
 import 'package:sqltest/item_currency.dart';
 
-var krwusd = ItemCurrency('KRWUSD');
+var krwusd = ItemCurrency('KRW','USD');
 var gItems = [krwusd];
 
-AssetDB gDB = AssetDB();
+AssetDB gDB = AssetDB("asset");
 
 Future<void> updateItem(ItemType item, String at) async {
   var value = await item.load(at);

@@ -34,8 +34,8 @@ class Currency {
 */
 
 class ItemCurrency extends ItemType {
-  final String fname; // from KRWUSD : KRW(to) USD(from)
   final String tname; // to
+  final String fname; // from ex) KRWUSD : KRW(to) USD(from)
   ItemCurrency(this.tname, this.fname) : super('$tname$fname', 'CURRENCY');
 
   @override
@@ -43,8 +43,9 @@ class ItemCurrency extends ItemType {
     const apikey = 'FZ3A82KR6LZ6KZXK';
     var url = 'https://www.alphavantage.co/query?function=FX_DAILY&from_symbol=$fname&to_symbol=$tname&apikey=$apikey';
     var res = await http.read(Uri.parse(url));
-    //print('call ItemCurrency[$name] load $url');
-    var d = jsonDecode(res)["Time Series FX (Daily)"][at] as Map<String, dynamic>;
+    print('call ItemCurrency[$name] load $url');
+    var jsdata = jsonDecode(res)["Time Series FX (Daily)"];
+    var d = jsdata[at] as Map<String, dynamic>;
     return double.parse(d["4. close"]);
   }
 }

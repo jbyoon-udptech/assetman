@@ -12,11 +12,15 @@ var gItems = [
   ItemStockUS('NVDA', 'NVIDIA')
 ];
 
-AssetDB xDB = AssetDB("asset");
+//AssetDB xDB = AssetDB("asset");
 
 Future<void> updateItem(AssetDB db, ItemType item, String at) async {
-  var value = await item.load(at);
-  await db.upsert(Asset(item.name, at, value));
+  try {
+    var value = await item.load(at);
+    await db.upsert(Asset(item.name, at, value));
+  } on Exception catch (e) {
+    print('updateItem error $e');
+  }
 }
 
 Future<void> clearAllItems(AssetDB db) async {
