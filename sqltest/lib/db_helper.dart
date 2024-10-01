@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 
 import 'package:sqltest/asset_model.dart';
 //import 'dart:io' as io;
@@ -15,9 +17,13 @@ class AssetDB {
   AssetDB(this.dbname);
   initDatabase() async {
     databaseFactoryOrNull = null;
-    sqfliteFfiInit();
-    databaseFactory = databaseFactoryFfi;
     WidgetsFlutterBinding.ensureInitialized();
+    if (kIsWeb) {
+      databaseFactory = databaseFactoryFfiWeb;
+    } else {
+      sqfliteFfiInit();
+      databaseFactory = databaseFactoryFfi;
+    }
 
     String path = join(await getDatabasesPath(), '$dbname.db');
     _db = await openDatabase(path, version: 1, onCreate: _onCreate);
@@ -79,12 +85,12 @@ class AssetDB {
   }
 
   Future<Asset> upsert(Asset d) async {
+    print('update ${d.name} ${d.at} ${d.value}');
     try {
       await insert(d);
     } catch (e) {
       await update(d);
     }
-    print('update ${d.name} ${d.at} ${d.value}');
     return d;
   }
 

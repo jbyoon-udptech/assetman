@@ -35,6 +35,9 @@ class ItemStockUS extends ItemType {
     var res = await http.read(Uri.parse(url));
     //print(res);
     var all = jsonDecode(res)["Time Series (Daily)"];
+    if (all == null) {
+      return -1;
+    }
     Map<String, dynamic> d;
     if (all.containsKey(at)) {
       d = all[at] as Map<String, dynamic>;

@@ -18,4 +18,8 @@ samples, guidance on mobile development, and a full API reference.
 ## Prerequsites
 
 - sqlite3
-  ```sudo apt-get install sqlite3 libsqlite3-dev```
+  `sudo apt-get install sqlite3 libsqlite3-dev`
+
+## code unit test
+
+  `flutter test`

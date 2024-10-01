@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_simple_treeview/flutter_simple_treeview.dart';
 
-// void main() {
-//   runApp(const MyApp());
-// }
+import 'package:sqltest/status_flag.dart';
+import 'package:sqltest/asset_model.dart';
+import 'package:sqltest/data_table.dart';
+import 'package:sqltest/db_items.dart';
+
+void main() {
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -31,7 +37,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Asset Manager'),
     );
   }
 }
@@ -55,9 +61,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String _status = "done";
   int _counter = 0;
+  List<Asset> items = [];
 
-  void _incrementCounter() {
+  void _incrementCounter() async {
+    setState(() {
+      _status = "ready";
+    });
+    items = await loadAllItems();
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
@@ -65,6 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
+      _status = "done";
     });
   }
 
@@ -112,14 +125,45 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            StatusFlag(status: _status),
+            MyDataTable(items: items, counter: _counter),
+            MyTreeTable(),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        tooltip: 'Refresh',
+        child: const Icon(Icons.refresh),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class MyTreeTable extends StatelessWidget {
+  const MyTreeTable({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: TreeView(nodes: [
+        TreeNode(content: Text("root1")),
+        TreeNode(
+          content: Text("root2"),
+          children: [
+            TreeNode(content: Text("child21")),
+            TreeNode(content: Text("child22")),
+            TreeNode(
+              content: Text("root23"),
+              children: [
+                TreeNode(content: Text("child231")),
+                //TreeNode(content: MyDataTable()),
+              ],
+            ),
+          ],
+        ),
+      ]),
     );
   }
 }

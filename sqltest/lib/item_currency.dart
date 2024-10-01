@@ -45,6 +45,9 @@ class ItemCurrency extends ItemType {
     var res = await http.read(Uri.parse(url));
     print('call ItemCurrency[$name] load $url');
     var jsdata = jsonDecode(res)["Time Series FX (Daily)"];
+    if (jsdata == null) {
+      return -1;
+    }
     var d = jsdata[at] as Map<String, dynamic>;
     return double.parse(d["4. close"]);
   }

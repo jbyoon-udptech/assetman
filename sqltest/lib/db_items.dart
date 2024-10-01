@@ -6,17 +6,15 @@ import 'package:sqltest/item_stock_us.dart';
 import 'package:sqltest/items.dart';
 import 'package:sqltest/item_currency.dart';
 
-var gItems = [
-  ItemCurrency('KRW', 'USD'),
-  ItemStockKR('042660', '한화오션'),
-  ItemStockUS('NVDA', 'NVIDIA')
-];
+var gItems = [ItemCurrency('KRW', 'USD'), ItemStockKR('042660', '한화오션'), ItemStockUS('NVDA', 'NVIDIA')];
 
-//AssetDB xDB = AssetDB("asset");
+AssetDB myDB = AssetDB("asset");
 
 Future<void> updateItem(AssetDB db, ItemType item, String at) async {
   try {
     var value = await item.load(at);
+    if (value < 0) return;
+    print('updateItem ${item.name} $at $value');
     await db.upsert(Asset(item.name, at, value));
   } on Exception catch (e) {
     print('updateItem error $e');
@@ -55,5 +53,16 @@ Future<List<Asset>> readAllItems(AssetDB db, String at) async {
       items.add(d);
     }
   }
+  return items;
+}
+
+Future<List<Asset>> loadAllItems() async {
+  var date = DateTime.now().add(const Duration(days: -6));
+  var at = DateFormat('yyy-MM-dd').format(date.add(const Duration(days: -6)));
+  // at = "2024-06-10"
+
+  await updateAllItems(myDB, at);
+  var items = await readAllItems(myDB, at);
+  print('show all items $items');
   return items;
 }
